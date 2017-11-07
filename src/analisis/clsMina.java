@@ -26,7 +26,12 @@ public class clsMina {
     ArrayList<clsMinero>mineros;
     ArrayList<Casilla>casillas;
 
-    public clsMina() {
+    public clsMina(int id,String material,int Cantidad,int tiempo,int velocidad) {
+        this.id=id;
+        this.Material=material;
+        this.cantidad_mineros=Cantidad;
+        this.tiempo_extraccion=tiempo;
+        this.velocidad_desplazamiento=velocidad;
         depostios=new ArrayList<>();
         mineros=new ArrayList<>();
         casillas=new ArrayList<>();
@@ -51,4 +56,19 @@ public class clsMina {
         depostios.add(d);
         
     }
+
+    /**
+     * @return the entrada
+     */
+    public Point getEntrada() {
+        return entrada;
+    }
+
+    /**
+     * @param entrada the entrada to set
+     */
+    public void setEntrada(Point entrada) {
+        this.entrada = entrada;
+    }
+    
 }

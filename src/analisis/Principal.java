@@ -20,7 +20,8 @@ public class Principal extends javax.swing.JFrame {
     static int  botontunel = 0;
     static int botonentrada = 0;
     static int botondeposito = 0;
- 
+    static boolean entrada=true;
+    static  String material;
     
     public Principal() {
         
@@ -35,6 +36,7 @@ public class Principal extends javax.swing.JFrame {
         btnDeposito.setIcon(face);
         face = new ImageIcon(getClass().getResource("../imagenes/icono_entrada.png"));
         btnEntrada.setIcon(face);
+        
     }
      
      public static  void notificar(int mina,Point p){
@@ -43,7 +45,9 @@ public class Principal extends javax.swing.JFrame {
              
          }
          else if (botonentrada==1) {
+             entrada=false;
              minas.get(mina).ingresarnuemromapa(p,100);
+             minas.get(mina).setEntrada(p);
          }else{
              minas.get(mina).ingresarnuemromapa(p,minas.get(mina).depostios.size()+1);
              minas.get(mina).crearDeposito(minas.get(mina).depostios.size()+1,Integer.parseInt(JOptionPane.showInputDialog(null,"ingrese cantidad de material")),p);
@@ -58,6 +62,7 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jComboBox1 = new javax.swing.JComboBox();
         btnTunel = new javax.swing.JButton();
         btnDeposito = new javax.swing.JButton();
         btnEntrada = new javax.swing.JButton();
@@ -65,6 +70,8 @@ public class Principal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1200, 700));
@@ -138,24 +145,30 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         
-        String material = JOptionPane.showInputDialog(this, "Ingrese material de la mina");
-        botones();
-         clsMina m=new clsMina();
-       for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 12; j++) {
-                Casilla c = new Casilla();
-                c.setId(new Point(i,j));
-                c.setMina(minas.size());
-                getContentPane().setLayout(null);
-                getContentPane().add(c);
-                c.setVisible(true);
-                c.setBounds(j*75+280, i*75, 75, 75);
-                m.casillas.add(c);
-                
-                
+         material= JOptionPane.showInputDialog(this, "Ingrese material de la mina");
+        if (material.equalsIgnoreCase("oro") || material.equalsIgnoreCase("plata") || material.equalsIgnoreCase("cobre")) {
+            botones();
+            clsMina m = new clsMina(this.minas.size(), material, Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese cantidad maxima de mineros")), Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese tiempo de extraccion")), Integer.parseInt(JOptionPane.showInputDialog(this, "Ingrese velocidad de desplazamiento")));
+            for (int i = 0; i < 8; i++) {
+                for (int j = 0; j < 12; j++) {
+                    Casilla c = new Casilla();
+                    c.setId(new Point(i, j));
+                    c.setMina(minas.size());
+                    getContentPane().setLayout(null);
+                    getContentPane().add(c);
+                    c.setVisible(true);
+                    c.setBounds(j * 75 + 280, i * 75, 75, 75);
+                    m.casillas.add(c);
+
+                }
             }
+            minas.add(m);
         }
-        minas.add(m);
+        else{
+            JOptionPane.showMessageDialog(this,"Material invalido");
+        }
+        
+        
          
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -181,9 +194,12 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDepositoActionPerformed
 
     private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
-        botonentrada = 1;
-        botontunel=0;
-        botondeposito=0;
+        
+            botonentrada = 1;
+            botontunel = 0;
+            botondeposito = 0;
+        
+        
     }//GEN-LAST:event_btnEntradaActionPerformed
 
     /**
@@ -225,6 +241,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnDeposito;
     private javax.swing.JButton btnEntrada;
     private javax.swing.JButton btnTunel;
+    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

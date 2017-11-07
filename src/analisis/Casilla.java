@@ -53,20 +53,32 @@ public class Casilla extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-        if (Principal.botonentrada==1) {
+        if (Principal.botonentrada==1&&Principal.entrada) {
             fondo=new ImageIcon(getClass().getResource("../imagenes/entrada.png"));
-            this.getGraphics().drawImage(fondo.getImage(), 0, 0,74,75, null);            
+            this.getGraphics().drawImage(fondo.getImage(), 0, 0,74,75, null);  
+            Principal.notificar(getMina(), id);
         }
         if (Principal.botontunel==1) {
             fondo = new ImageIcon(getClass().getResource("../imagenes/tunel.png"));
             this.getGraphics().drawImage(fondo.getImage(), 0, 0, 74, 75, null);
+            Principal.notificar(getMina(), id);
         }
         //debe de pintar el deposito dependiendo del material de la mina
         if (Principal.botondeposito==1) {
-            fondo = new ImageIcon(getClass().getResource("../imagenes/oro.png"));
+            if (Principal.material.equalsIgnoreCase("oro")) {
+                fondo = new ImageIcon(getClass().getResource("../imagenes/oro.png"));
+            }
+            if (Principal.material.equalsIgnoreCase("plata")) {
+                fondo = new ImageIcon(getClass().getResource("../imagenes/plata.png"));
+            }
+            if (Principal.material.equalsIgnoreCase("cobre")) {
+                fondo = new ImageIcon(getClass().getResource("../imagenes/cobre.png"));
+            }
+            
             this.getGraphics().drawImage(fondo.getImage(), 0, 0, 74, 75, null);
+            Principal.notificar(getMina(), id);
         }
-        Principal.notificar(getMina(), id);
+        
         
     }//GEN-LAST:event_formMouseClicked
 

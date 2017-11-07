@@ -23,4 +23,5 @@ public class clsMinero {
     private Point destino;
     private ArrayList<Point> posiciones;
     private int capacidad_carga;
+    
 }

@@ -54,17 +54,17 @@ public class Casilla extends javax.swing.JPanel {
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
         if (Principal.botonentrada==1) {
-            ImageIcon img=new ImageIcon(getClass().getResource("../imagenes/entrada.png"));
-            this.getGraphics().drawImage(img.getImage(), 0, 0,74,75, null);            
+            fondo=new ImageIcon(getClass().getResource("../imagenes/entrada.png"));
+            this.getGraphics().drawImage(fondo.getImage(), 0, 0,74,75, null);            
         }
         if (Principal.botontunel==1) {
-            ImageIcon img = new ImageIcon(getClass().getResource("../imagenes/tunel.png"));
-            this.getGraphics().drawImage(img.getImage(), 0, 0, 74, 75, null);
+            fondo = new ImageIcon(getClass().getResource("../imagenes/tunel.png"));
+            this.getGraphics().drawImage(fondo.getImage(), 0, 0, 74, 75, null);
         }
         //debe de pintar el deposito dependiendo del material de la mina
         if (Principal.botondeposito==1) {
-            ImageIcon img = new ImageIcon(getClass().getResource("../imagenes/oro.png"));
-            this.getGraphics().drawImage(img.getImage(), 0, 0, 74, 75, null);
+            fondo = new ImageIcon(getClass().getResource("../imagenes/oro.png"));
+            this.getGraphics().drawImage(fondo.getImage(), 0, 0, 74, 75, null);
         }
         Principal.notificar(getMina(), id);
         

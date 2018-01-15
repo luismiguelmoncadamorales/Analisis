@@ -12,6 +12,8 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 
 public class Principal extends javax.swing.JFrame {
@@ -22,6 +24,7 @@ public class Principal extends javax.swing.JFrame {
     static int botondeposito = 0;
     static boolean entrada=true;
     static  String material;
+    static int indexminaactual=0;
     
     public Principal() {
         
@@ -49,9 +52,17 @@ public class Principal extends javax.swing.JFrame {
              minas.get(mina).ingresarnuemromapa(p,100);
              minas.get(mina).setEntrada(p);
          }else{
+             int cm=Integer.parseInt(JOptionPane.showInputDialog(null,"ingrese cantidad de material"));
              minas.get(mina).ingresarnuemromapa(p,minas.get(mina).depostios.size()+1);
-             minas.get(mina).crearDeposito(minas.get(mina).depostios.size()+1,Integer.parseInt(JOptionPane.showInputDialog(null,"ingrese cantidad de material")),p);
+             minas.get(mina).crearDeposito(minas.get(mina).depostios.size()+1,cm,p);
+             actualizar_Tabla(mina,cm);
          }
+     }
+     
+     public static void actualizar_Tabla(int mina,int cantidad){
+         DefaultTableModel modelo= (DefaultTableModel)tblCantidaddepositos.getModel();
+         modelo.addRow(new Object[]{String.valueOf(mina+1),String.valueOf(cantidad)});
+         
      }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -66,15 +77,17 @@ public class Principal extends javax.swing.JFrame {
         btnTunel = new javax.swing.JButton();
         btnDeposito = new javax.swing.JButton();
         btnEntrada = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblCantidaddepositos = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1200, 700));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -99,6 +112,24 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        tblCantidaddepositos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Deposito", "cantidad"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblCantidaddepositos);
+
         jMenu1.setText("Archivo");
 
         jMenuItem1.setText("Crear");
@@ -108,6 +139,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("prueba");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
 
@@ -122,11 +161,13 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                    .addComponent(btnTunel, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
-                    .addComponent(btnDeposito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(315, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                        .addComponent(btnTunel, javax.swing.GroupLayout.DEFAULT_SIZE, 75, Short.MAX_VALUE)
+                        .addComponent(btnDeposito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(1077, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,7 +178,9 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(btnDeposito, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(331, Short.MAX_VALUE))
         );
 
         pack();
@@ -202,6 +245,12 @@ public class Principal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnEntradaActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        clsMinero minero=new clsMinero();
+        minas.get(indexminaactual).asignar(minero);
+        minas.get(indexminaactual).simular();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -236,7 +285,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDeposito;
     private javax.swing.JButton btnEntrada;
@@ -246,5 +294,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JScrollPane jScrollPane1;
+    public static javax.swing.JTable tblCantidaddepositos;
     // End of variables declaration//GEN-END:variables
 }

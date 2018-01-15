@@ -8,6 +8,7 @@ package analisis;
 import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.awt.Point;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -23,8 +24,9 @@ public class clsMina {
     private int[][]mapa;
     private Point entrada;
     ArrayList<clsDeposito>depostios;
-    ArrayList<clsMinero>mineros;
+    ArrayList<clsMinero>mineros=new ArrayList<>();
     ArrayList<Casilla>casillas;
+    clsRutaMinima ruta=new clsRutaMinima();
 
     public clsMina(int id,String material,int Cantidad,int tiempo,int velocidad) {
         this.id=id;
@@ -71,4 +73,35 @@ public class clsMina {
         this.entrada = entrada;
     }
     
-}
+
+    public ArrayList ruta(int d){
+        ArrayList<Point>p=new ArrayList<>();
+        ruta.deposito=d;
+        int distancia=ruta.solucion(mapa, entrada.x, entrada.y, 0, 0);
+        System.out.println("distancia"+distancia);
+        p= ruta.camino(mapa, entrada.x, entrada.y, 0, 0, distancia,p);
+        return p;
+    }
+    
+    public void asignar(clsMinero m){
+        m.setCasillas(casillas);
+        m.setDestino(mineros.size()+1);
+        m.setEspecialidad(Material);
+        m.setImagen(new ImageIcon(getClass().getResource("../imagenes/Mcobre.png")));
+        m.setPosiciones(this.ruta(m.getDestino()));
+        m.setVelocidad(velocidad_desplazamiento);
+        m.setTiiempo_extraccion(tiempo_extraccion);
+        mineros.add(m);
+        
+    }
+     public void simular(){
+         for (int i = 0; i < mineros.size(); i++) {
+             Thread hilo=new Thread(mineros.get(i));
+             hilo.start();
+         }
+     }
+    
+    
+    }
+    
+

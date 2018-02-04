@@ -7,10 +7,11 @@ package analisis;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 
 public class clsRutaMinima {
-  public int deposito=0;
+  public static int deposito;
      
     public String  adyascentes(int i, int j,int iposicion,int jposicion){
         String salida="";
@@ -110,62 +111,74 @@ boolean salida = false;
 
 public int solucion(int matriz[][], int i, int j, int iorigen, int jorigen){
 
-int [] valores = new int[4];
-int minimo;
-int k = 0;
-int l = 0;
-int iter=0;
+        int[] valores = new int[4];
+        int minimo;
+        int k = 0;
+        int l = 0;
+        int iter = 0;
 
-if (sinsalida(matriz,i,j)){
-    return 99;
-}else if ((llegue(matriz,i, j))){
-    
-    return 1;
-}else{
-for (int m = 0; m < 4; m++) {
-    valores[m]=99;
-    }
-}
-while (k<8){
-  l=0;
-  while(l<12){
-       if ((adyascentes(k, l, i, j).equals("arriba"))&& (matriz[k][l]==-1) ){
-        if ((k!=iorigen) || (l!=jorigen)){
-         valores[0] = solucion(matriz ,k, l,i,j)+1;
-        }
-        }
-        if ((adyascentes(k, l, i, j).equals("izquierda"))&& (matriz[k][l]==-1)){
-                if ((k!=iorigen) || (l!=jorigen)) {
-                  valores[1] = solucion(matriz ,k, l,i,j)+1;
-                }
-        }
-        if ((adyascentes(k, l, i, j).equals("derecha"))&& (matriz[k][l]==-1)){                                                              
-        if ((k!=iorigen) || (l!=jorigen)){
-        valores[2] =solucion(matriz ,k, l,i,j)+1;
-        }
-        }
-        if ((adyascentes(k, l, i, j).equals("abajo"))&& (matriz[k][l]==-1)){
-        if ((k!=iorigen) || (l!=jorigen)){
-        valores[3] = solucion(matriz ,k, l,i,j)+1;
-        }
-        }
-        l=l+1;
-  }
-  k=k+1;
-}     
-        minimo = valores[0];
-        iter =0;
-        while (iter < valores.length){                   
-            if (minimo > valores[iter]) {
-               minimo = valores[iter];                      
+        if (sinsalida(matriz, i, j)) {
+            return 99;
+        } else if ((llegue(matriz, i, j))) {
+
+            return 1;
+        } else {
+            for (int m = 0; m < 4; m++) {
+                valores[m] = 99;
             }
-               iter = iter+1;
         }
-         return minimo;           
-      } 
+        while (k < 8) {
+            l = 0;
+            while (l < 12) {
+                if ((adyascentes(k, l, i, j).equals("arriba")) && (matriz[k][l] == -1)) {
+                    if ((k != iorigen) || (l != jorigen)) {
+                        valores[0] = solucion(matriz, k, l, i, j) + 1;
+                    }
+                }
+                if ((adyascentes(k, l, i, j).equals("izquierda")) && (matriz[k][l] == -1)) {
+                    if ((k != iorigen) || (l != jorigen)) {
+                        valores[1] = solucion(matriz, k, l, i, j) + 1;
+                    }
+                }
+                if ((adyascentes(k, l, i, j).equals("derecha")) && (matriz[k][l] == -1)) {
+                    if ((k != iorigen) || (l != jorigen)) {
+                        valores[2] = solucion(matriz, k, l, i, j) + 1;
+                    }
+                }
+                if ((adyascentes(k, l, i, j).equals("abajo")) && (matriz[k][l] == -1)) {
+                    if ((k != iorigen) || (l != jorigen)) {
+                        valores[3] = solucion(matriz, k, l, i, j) + 1;
+                    }
+                }
+                l = l + 1;
+            }
+            k = k + 1;
+        }
+        minimo = valores[0];
+        iter = 0;
+        while (iter < valores.length) {
+            if (minimo > valores[iter]) {
+                minimo = valores[iter];
+            }
+            iter = iter + 1;
+        }
+        return minimo;
+    }
     
     
-    
+    public void pintar_matriz(int matriz[][]){
+          System.out.println("-------------matriz-------------");
+          for (int x = 0; x < matriz.length; x++) {
+            System.out.print("|");
+            for (int y = 0; y < matriz[x].length; y++) {
+                System.out.print(matriz[x][y]);
+                if (y != matriz[x].length - 1) {
+                    System.out.print("\t");
+                }
+            }
+            System.out.println("|");
+        }
+      }
     
 } 
     

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,6 +27,7 @@ public class clsMinero implements Runnable{
     private ArrayList<Point> posiciones;
     private int capacidad_carga;
     private ArrayList<Casilla>casillas;
+   
     
 
 
@@ -42,50 +44,70 @@ public class clsMinero implements Runnable{
     public void run() {
         int temp=0;
         
-        for (int i = 0; i < getPosiciones().size(); i++) {
-            System.out.println("posiciones en minero :"+getPosiciones().get(i).x+"--"+getPosiciones().get(i).y);
-            try {
-                for (int j = 0; j < getCasillas().size(); j++) {
-                    if (getCasillas().get(j).getId().x==getPosiciones().get(i).x&&getCasillas().get(j).getId().y==getPosiciones().get(i).y) {
-                        getCasillas().get(j).cambiarfondo(getImagen());
-                        if (i!=0) {
-                            casillas.get(temp).cambiarfondo2();
+        while (Principal.Consultar_Disponibilidad_material(destino) > 0) {
+            for (int i = 0; i < getPosiciones().size(); i++) {
+                System.out.println("posiciones en minero :" + getPosiciones().get(i).x + "--" + getPosiciones().get(i).y);
+                try {
+                    for (int j = 0; j < getCasillas().size(); j++) {
+                        if (getCasillas().get(j).getId().x == getPosiciones().get(i).x && getCasillas().get(j).getId().y == getPosiciones().get(i).y) {
+                            
+                            getCasillas().get(j).cambiarfondo(getImagen());
+                            if (i != 0) {
+                                casillas.get(temp).cambiarfondo2();
+                            }
+
+                            temp = j;
                         }
-                        
-                        temp=j;
+
                     }
-                    
+                    Thread.sleep(getVelocidad() * 100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(clsMinero.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                Thread.sleep(getVelocidad()*100);   
+            }
+
+            try {
+                Thread.sleep(tiiempo_extraccion * 100);
             } catch (InterruptedException ex) {
                 Logger.getLogger(clsMinero.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        
-        
-        try {
-            Thread.sleep(tiiempo_extraccion*100);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(clsMinero.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        temp=0;
-        for (int i = 0; i < getPosiciones().size(); i++) {
-            try {
-                for (int j = 0; j < getCasillas().size(); j++) {
-                    if (getCasillas().get(j).getId().x==getPosiciones().get(getPosiciones().size()-1-i).x&&getCasillas().get(j).getId().y==getPosiciones().get(getPosiciones().size()-1-i).y) {
-                        getCasillas().get(j).cambiarfondo(getImagen());
-                        if (i!=0) {
-                            casillas.get(temp).cambiarfondo2();
+            Principal.Descontar_Disponibilidad_material(destino, capacidad_carga);
+            temp = 0;
+            for (int i = 0; i < getPosiciones().size(); i++) {
+                try {
+                    for (int j = 0; j < getCasillas().size(); j++) {
+                        if (getCasillas().get(j).getId().x == getPosiciones().get(getPosiciones().size() - 1 - i).x && getCasillas().get(j).getId().y == getPosiciones().get(getPosiciones().size() - 1 - i).y) {
+                            getCasillas().get(j).cambiarfondo(getImagen());
+                            if (i != 0) {
+                                casillas.get(temp).cambiarfondo2();
+                            }
+                            temp = j;
                         }
-                        temp=j;
+
                     }
+                    Thread.sleep(getVelocidad() * 100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(clsMinero.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            Principal.TotalMaterialExtraido(capacidad_carga);
+            if (Principal.Consultar_Disponibilidad_material(destino)<=0) {
+              Principal.minas.get(id).actualizarDeposito(destino);
+              int nuevodestino=Principal.minas.get(id).devolverDestino(destino);
+              
+                if (nuevodestino!=99) {
+                    destino=nuevodestino;
+                    this.posiciones=Principal.minas.get(id).ruta(destino);
+                }else{
+                    JOptionPane.showMessageDialog(null,"no hay mas depositos!!!");
                     
                 }
-                Thread.sleep(getVelocidad()*100);   
-            } catch (InterruptedException ex) {
-                Logger.getLogger(clsMinero.class.getName()).log(Level.SEVERE, null, ex);
+                
+                
+              
             }
         }
+        
         
     }
 
@@ -214,6 +236,7 @@ public class clsMinero implements Runnable{
     public void setCasillas(ArrayList<Casilla> casillas) {
         this.casillas = casillas;
     }
+
     
     
 }

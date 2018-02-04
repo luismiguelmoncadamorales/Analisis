@@ -9,6 +9,7 @@ import com.sun.org.apache.bcel.internal.generic.AALOAD;
 import java.awt.Point;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -24,9 +25,9 @@ public class clsMina {
     private int[][]mapa;
     private Point entrada;
     ArrayList<clsDeposito>depostios;
-    ArrayList<clsMinero>mineros=new ArrayList<>();
+    ArrayList<clsMinero>mineros;
     ArrayList<Casilla>casillas;
-    clsRutaMinima ruta=new clsRutaMinima();
+    clsRutaMinima ruta;
 
     public clsMina(int id,String material,int Cantidad,int tiempo,int velocidad) {
         this.id=id;
@@ -38,19 +39,30 @@ public class clsMina {
         mineros=new ArrayList<>();
         casillas=new ArrayList<>();
         mapa=new int[8][12];
+        ruta=new clsRutaMinima();
     }
     public void ingresarnuemromapa(Point p, int valor){
         mapa[p.x][p.y] = valor;
-        for (int x = 0; x < mapa.length; x++) {
-            System.out.print("|");
+        
+        pintar_matriz();
+    }
+    public void actualizarDeposito(int depo){
+       for (int x = 0; x < mapa.length; x++) {
             for (int y = 0; y < mapa[x].length; y++) {
-                System.out.print(mapa[x][y]);
-                if (y != mapa[x].length - 1) {
-                    System.out.print("\t");
+                if(mapa[x][y]==depo){
+                   mapa[x][y]=-1;
+                    for (int i = 0; i < casillas.size(); i++) {
+                        if (casillas.get(i).getId().x==x&&casillas.get(i).getId().y==y) {
+                            casillas.get(i).cambiarfondo(new ImageIcon(getClass().getResource("../imagenes/tunel.png")));
+                            casillas.get(i).fondo=new ImageIcon(getClass().getResource("../imagenes/tunel.png"));
+                            
+                        }
+                    }
                 }
             }
-            System.out.println("|");
+            
         }
+       pintar_matriz();
     }
     
     public void crearDeposito(int id,int cantidad,Point p){
@@ -75,6 +87,7 @@ public class clsMina {
     
 
     public ArrayList ruta(int d){
+        
         ArrayList<Point>p=new ArrayList<>();
         ruta.deposito=d;
         int distancia=ruta.solucion(mapa, entrada.x, entrada.y, 0, 0);
@@ -84,23 +97,71 @@ public class clsMina {
     }
     
     public void asignar(clsMinero m){
-        m.setCasillas(casillas);
-        m.setDestino(mineros.size()+1);
+        m.setId(id);
+        m.setCapacidad_carga(cantidad_mineros);
+        m.setCasillas(this.casillas);
+        m.setDestino(devolverDestino(mineros.size()+1));
         m.setEspecialidad(Material);
-        m.setImagen(new ImageIcon(getClass().getResource("../imagenes/Mcobre.png")));
         m.setPosiciones(this.ruta(m.getDestino()));
         m.setVelocidad(velocidad_desplazamiento);
         m.setTiiempo_extraccion(tiempo_extraccion);
+        if (Material.equalsIgnoreCase("oro")) {
+            m.setImagen(new ImageIcon(getClass().getResource("../imagenes/Moro.png")));
+        }
+        else if (Material.equalsIgnoreCase("plata")) {
+            m.setImagen(new ImageIcon(getClass().getResource("../imagenes/Mplata.png")));
+           
+        }
+        else{
+            m.setImagen(new ImageIcon(getClass().getResource("../imagenes/Mcobre.png")));
+        }
         mineros.add(m);
         
     }
+    
+    public int devolverDestino(int dest){
+        
+        JOptionPane.showMessageDialog(null,"destino"+dest);
+        pintar_matriz();
+        ruta.deposito=dest;
+        int distancia=ruta.solucion(mapa, entrada.x, entrada.y, 0, 0);
+        JOptionPane.showMessageDialog(null,"distancia"+distancia);
+        if (distancia==99) {
+            dest=99;
+            for (int i = 0; i < depostios.size(); i++) {
+                ruta.deposito=i+1;
+                distancia=ruta.solucion(mapa, entrada.x, entrada.y, 0, 0);
+                if (distancia!=99) {
+                   dest=i+1;
+                   i=depostios.size();
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(null,"asignado al deposito"+dest);
+        return dest;
+    }
+    
+    
      public void simular(){
          for (int i = 0; i < mineros.size(); i++) {
              Thread hilo=new Thread(mineros.get(i));
              hilo.start();
+             Principal.hilos.add(hilo);
          }
      }
-    
+      public void pintar_matriz(){
+          System.out.println("--------------------------");
+          for (int x = 0; x < mapa.length; x++) {
+            System.out.print("|");
+            for (int y = 0; y < mapa[x].length; y++) {
+                System.out.print(mapa[x][y]);
+                if (y != mapa[x].length - 1) {
+                    System.out.print("\t");
+                }
+            }
+            System.out.println("|");
+        }
+      }
     
     }
     

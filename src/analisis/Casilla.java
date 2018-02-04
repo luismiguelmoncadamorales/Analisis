@@ -8,6 +8,7 @@ package analisis;
 import java.awt.Graphics;
 import java.awt.Point;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,6 +54,7 @@ public class Casilla extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
+      
         if (Principal.botonentrada==1&&Principal.entrada) {
             fondo=new ImageIcon(getClass().getResource("../imagenes/entrada2.png"));
             this.getGraphics().drawImage(fondo.getImage(), 0, 0,74,75, null);  
@@ -112,10 +114,10 @@ public class Casilla extends javax.swing.JPanel {
         this.mina = mina;
     }
    
-    public void cambiarfondo(ImageIcon i){
+    synchronized public void cambiarfondo(ImageIcon i){
        this.getGraphics().drawImage(i.getImage(), 0, 0,74,75, null); 
     }
-    public void cambiarfondo2(){
+    synchronized public void cambiarfondo2(){
        
        this.getGraphics().drawImage(fondo.getImage(), 0, 0,74,75, null); 
     }

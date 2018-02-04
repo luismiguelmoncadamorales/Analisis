@@ -21,6 +21,20 @@ public class clsDeposito {
         this.cantidad_material = cantidad_material;
         this.posisicon = posisicon;
     }
+
+    /**
+     * @return the cantidad_material
+     */
+    public int getCantidad_material() {
+        return cantidad_material;
+    }
+
+    /**
+     * @param cantidad_material the cantidad_material to set
+     */
+    public void setCantidad_material(int cantidad_material) {
+        this.cantidad_material = cantidad_material;
+    }
      
     
 }

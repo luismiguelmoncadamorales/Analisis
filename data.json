@@ -1,0 +1,100 @@
+{
+  "infoMineros": {
+    "totalMineros": 70,
+    "totalMinerosOro": 30,
+    "totalMinerosPlata": 10,
+    "totalMinerosCobre": 20,
+    "totalMinerosComodin": 10
+  },
+  "infoMinas": {
+    "capacidadCargaOro": 2,
+    "capacidadCargaPlata": 3,
+    "capacidadCargaCobre": 2,
+    "unidadCapacidadCarga": "kg",
+    "GananciaOro": 30,
+    "GananciaPlata": 15,
+    "GananciaCobre": 5
+  },
+  "minas": [
+    {
+      "tipoMineral": "oro",
+      "capacidadMineros": 30,
+      "capacidadDeposito": 500,
+      "unidadCapacidad": "kg",
+      "tiempoExtraccion": 0.2,
+      "unidadTiempo": "segundos",
+      "velocidadDesplazamiento": 40,
+      "unidadVelocidad": "m/s",
+      "ancho": 5,
+      "largo": 7,
+      "entradaMina": {
+        "x": 1,
+        "y": 1
+      },
+      "seccionesMina": [
+        {
+          "tipo": "T",
+          "x": 1,
+          "y": 2
+        },
+        {
+          "tipo": "T",
+          "x": 1,
+          "y": 3
+        },
+        {
+          "tipo": "T",
+          "x": 1,
+          "y": 4
+        },{
+          "tipo": "T",
+          "x": 1,
+          "y": 5
+        },{
+          "tipo": "T",
+          "x": 2,
+          "y": 5
+        },{
+          "tipo": "T",
+          "x": 2,
+          "y": 6
+        },
+        {
+          "tipo": "D",
+          "x": 2,
+          "y": 7
+        }
+		,
+        {
+          "tipo": "D",
+          "x": 3,
+          "y": 7
+        }
+        
+      ]
+    },
+	{
+      "tipoMineral": "plata",
+      "capacidadMineros": 50,
+      "capacidadDeposito": 500,
+      "unidadCapacidad": "kg",
+      "tiempoExtraccion": 0.2,
+      "unidadTiempo": "segundos",
+      "velocidadDesplazamiento": 40,
+      "unidadVelocidad": "m/s",
+      "ancho": 8,
+      "largo": 7,
+      "entradaMina": {
+        "x": 2,
+        "y": 1
+      },
+      "seccionesMina": [
+        {
+          "tipo": "D",
+          "x": 1,
+          "y": 1
+        }
+      ]
+    }
+  ]
+}
